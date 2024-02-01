@@ -1,25 +1,64 @@
+import tkinter as tk
+from tkinter import messagebox
 from questions import questions
 
-def show_question(question_base):
-    print("\n" + question_base["question"])
-    for q, option in enumerate(question_base["options"], start=1):
-        print(f"{q}. {option}")
-    user_answer = int(input("Choose the correct answer by entering 1-3: "))
-    return user_answer == question_base["options"].index(question_base["correct_answer"]) + 1
+def show_question(question_base, radio_buttons, radio_var, question_label):
+    question_label.config(text=question_base["question"])
+    for i, radio_button in enumerate(radio_buttons):
+        radio_button.config(text=question_base["options"][i])
+    radio_var.set(0)
+
+def submit_answer(question_data, user_answer, score_label, current_question, radio_buttons, question_label, radio_var):
+    correct_answer = question_data["correct_answer"]
+
+    if user_answer == correct_answer:
+        messagebox.showinfo("Correct!", f"Correct! {question_data['options'][user_answer - 1]} is the right answer.")
+        score_label.config(text=f"Score: {int(score_label.cget('text').split(': ')[-1]) + 1}")
+    else:
+        correct_option = question_data["correct_answer"]
+        messagebox.showinfo("Incorrect", f"Sorry, the correct answer is {correct_option}")
+
+    current_question[0] += 1
+    if current_question[0] < len(questions):
+        show_question(questions[current_question[0]], radio_buttons, radio_var, question_label)
+    else:
+        messagebox.showinfo("Quiz Finished", f"You scored {int(score_label.cget('text').split(': ')[-1])} out of {len(questions)}!")
+
+
+    current_question[0] += 1
+    if current_question[0] < len(questions):
+        show_question(questions[current_question[0]], radio_buttons, radio_var, question_label)
+    else:
+        messagebox.showinfo("Quiz Finished", f"You scored {int(score_label.cget('text').split(': ')[-1])} out of {len(questions)}!")
 
 def quizz():
-    score = 0
-    proceed = input(f"Hello! Welcome to the short bioQuizz. If you're ready, press 'y' to continue: ")
-    if proceed.lower() == "y":
-        for question_data in questions:
-            if show_question(question_data):
-                print(f"Correct! {question_data['correct_answer']} is the right answer.")
-                score += 1
-            else:
-                print(f"Sorry, the correct answer is {question_data['correct_answer']}")
+    root = tk.Tk()
+    root.title("BioQuizz")
 
-        print(f"You scored {score} out of {len(questions)}!")
-    else:
-        print("Okay then :(, may we see eachother soon <3")
+    question_label = tk.Label(root, text="")
+    question_label.pack()
 
-quizz()
+    radio_var = tk.IntVar()
+
+    radio_buttons = []
+    for i in range(3):
+        radio_button = tk.Radiobutton(root, text="", variable=radio_var, value=i + 1)
+        radio_buttons.append(radio_button)
+        radio_button.pack()
+
+    score_label = tk.Label(root, text="Score: 0")
+    score_label.pack()
+
+    current_question = [0]
+
+    show_question(questions[current_question[0]], radio_buttons, radio_var, question_label)
+
+    submit_button = tk.Button(root, text="Submit", command=lambda: submit_answer(
+        questions[current_question[0]], radio_var.get(), score_label, current_question, radio_buttons, question_label, radio_var
+    ))
+    submit_button.pack()
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    quizz()
