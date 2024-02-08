@@ -4,9 +4,9 @@
 bioQuizz is a Python-based quiz application created to test and enhance your knowledge in molecular biology.
 
 ## Features
-- **User-Friendly Interface:** Intuitive design for easy navigation. 🔜
 - **Question Bank:** Diverse set of biology questions.
-- **Randomized Quizzes:** Dynamically generated quizzes for a unique experience. 🔜
+- **Randomized Quizzes:** Dynamically generated quizzes for a unique experience.
+- **Real life controlling:** Micropython code implementation and use with real-life controller 🔜
 - **Score Tracking:** Monitor your progress and improvement. 🔜
 - **Workspace Compatibility:** Currently works seamlessly in your Python workspace.
 
