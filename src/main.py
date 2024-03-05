@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 from questions import questions
+import random
 
+random.shuffle(questions
+               )
 def show_question(question_base, radio_buttons, radio_var, question_label):
     question_label.config(text=question_base["question"])
     for i, radio_button in enumerate(radio_buttons):
