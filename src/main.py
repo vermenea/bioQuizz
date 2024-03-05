@@ -11,12 +11,11 @@ def show_question(question_base, radio_buttons, radio_var, question_label):
 def submit_answer(question_data, user_answer, score_label, current_question, radio_buttons, question_label, radio_var):
     correct_answer = question_data["correct_answer"]
 
-    if user_answer == correct_answer:
+    if correct_answer == question_data["options"][user_answer - 1]:
         messagebox.showinfo("Correct!", f"Correct! {question_data['options'][user_answer - 1]} is the right answer.")
         score_label.config(text=f"Score: {int(score_label.cget('text').split(': ')[-1]) + 1}")
     else:
-        correct_option = question_data["correct_answer"]
-        messagebox.showinfo("Incorrect", f"Sorry, the correct answer is {correct_option}")
+        messagebox.showinfo("Incorrect", f"Sorry, the correct answer is {correct_answer}")
 
     current_question[0] += 1
     if current_question[0] < len(questions):
@@ -24,12 +23,6 @@ def submit_answer(question_data, user_answer, score_label, current_question, rad
     else:
         messagebox.showinfo("Quiz Finished", f"You scored {int(score_label.cget('text').split(': ')[-1])} out of {len(questions)}!")
 
-
-    current_question[0] += 1
-    if current_question[0] < len(questions):
-        show_question(questions[current_question[0]], radio_buttons, radio_var, question_label)
-    else:
-        messagebox.showinfo("Quiz Finished", f"You scored {int(score_label.cget('text').split(': ')[-1])} out of {len(questions)}!")
 
 def quizz():
     root = tk.Tk()
@@ -57,6 +50,15 @@ def quizz():
         questions[current_question[0]], radio_var.get(), score_label, current_question, radio_buttons, question_label, radio_var
     ))
     submit_button.pack()
+    
+    submit_button.configure(
+    background="blue",  
+    foreground="white",  
+    font=("Helvetica", 10),  
+    width=5,  
+    height=1,  
+    bd=2, 
+)
 
     root.mainloop()
 
